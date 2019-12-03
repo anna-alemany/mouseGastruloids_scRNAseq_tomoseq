@@ -44,4 +44,20 @@ We refer to transcripts as unique molecules based on UMI correction.
 
 ## Description of scripts
 
+### SORT-seq and tomo-seq
 
+Let's assume we start with the following fastq files:
+
+* library_L001_R1_001.fastq.gz
+* library_L001_R2_001.fastq.gz
+* library_L002_R1_001.fastq.gz
+* library_L002_R2_001.fastq.gz
+* library_L003_R1_001.fastq.gz
+* library_L003_R2_001.fastq.gz
+* library_L004_R1_001.fastq.gz
+* library_L004_R2_001.fastq.gz
+
+To map them to the mouse genome, we need to type in the terminal:
+```{bash}
+submit_array_starmap.sh library_L00
+```
