@@ -97,6 +97,17 @@ which, as before, will merge the lanes, extract cell barcodes and UMIs from each
   14844 GACCAATCAACCACAT
   etc
 ```
-where the first column indicates the number of reads and the second the number of barcodes (both depend on the library). Exploring the number of reads per barcode (see figure below) it becomes natural to identify approximately the number of cells that have been sequenced.
+where the first column indicates the number of reads and the second the number of barcodes (both depend on the library). Exploring the number of reads per barcode (see figure below) it becomes natural to identify approximately the number of cells that have been sequenced. In the example shown here, the number of cells (vertical line) is set to 4,768.
 
 ![alt text](https://github.com/anna-alemany/mouseGastruloids_scRNAseq_tomoseq/blob/master/mapping_scripts/cells.jpg "Reads per Barcode")
+
+Now, we create a text file containing the barcodes that are assigned to valid cells. For example, typing:
+```{bash}
+head -4768 output_name_cbc_trimmed_rawCELLS.txt | awk '{print $2}' > output_name_cbc_trimmed_selectedCELLS.txt 
+```
+
+Finally, to produce the desired count table with transcriptome information, we use:
+```{bash}
+./submit_coutExonsIntrons10x.sh introns_bedfile exons_bedfile output_name_cbc_trimmed_selectedCELLS.txt outptu_name
+```
+where _introns_bedfile_ and _exons_bedfile_ are bedfiles containing information about the position of introns and exons. 
