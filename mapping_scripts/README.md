@@ -108,6 +108,6 @@ head -4768 output_name_cbc_trimmed_rawCELLS.txt | awk '{print $2}' > output_name
 
 Finally, to produce the desired count table with transcriptome information, we use:
 ```{bash}
-./submit_coutExonsIntrons10x.sh introns_bedfile exons_bedfile output_name_cbc_trimmed_selectedCELLS.txt outptu_name
+./submit_coutExonsIntrons10x.sh out_name_cbc_trimmed_starAligned.sortedByCoord.out.bam  introns_bedfile exons_bedfile out_name_cbc_trimmed_selectedCELLS.txt out_name_cbc_trimmed_star
 ```
-where _introns_bedfile_ and _exons_bedfile_ are bedfiles containing information about the position of introns and exons. 
+where _introns_bedfile_ and _exons_bedfile_ are bedfiles containing information about the position of introns and exons in the reference genome. 
