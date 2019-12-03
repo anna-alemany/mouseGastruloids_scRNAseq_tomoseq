@@ -22,8 +22,10 @@ source /hpc/hub_oudenaarden/aalemany/virtualEnvironments/venv36/bin/activate
 # define user's email
 email=a.alemany@hubrecht.eu
 
-# define path to mouse reference genome
+# define path to mouse reference genome and the path to bedfiles containing intron/exon locations
 reference=/hpc/hub_oudenaarden/group_references/ensembl/93/mus_musculus/star_index_60
+intron=/hpc/hub_oudenaarden/group_references/ensembl/93/mus_musculus/annotations_ensembl_93_mm_introns_exonsubtracted.bed
+exon=/hpc/hub_oudenaarden/group_references/ensembl/93/mus_musculus/annotations_ensembl_93_mm_exons.bed
 
 # The real script starts here.
 # This will submit a sequence of scripts in an array. First, fastq lanes will be merged, then barcodes will be extracted, resulting fastq files will be trimmed and mapped, and finally reads falling into introns and exons will be identified.
@@ -45,4 +47,4 @@ echo "${p2s}/trim.sh ${out}_cbc.fastq.gz ${p2trimgalore} ${p2cutadapt}" | qsub -
 echo "${p2s}/mapstar.sh ${out}_cbc_trimmed.fq.gz ${out}_cbc_trimmed_star $reference ${p2star}" | qsub -cwd -m eas -M $email -N map-$out -e map-${out}.err -o map-${out}.out -l h_vmem=30G -l h_rt=15:00:00 -pe threaded 12 -hold_jid trim-$out
 
 # create count tables from star map
-echo "${p2s}/getIntronsExons.sh ${out}_cbc_trimmed_starAligned.sortedByCoord.out.bam $reference ${out}_cbc_trimmed_star ${p2bedtools} ${p2samtools} ${p2s}" | qsub -V -cwd -m eas -M $email -N tab-$out -e tab-${out}.err -o tab-${out}.out -l h_vmem=20G -l h_rt=15:00:00 -pe threaded 2 -hold_jid map-$out
+echo "${p2s}/getIntronsExons.sh ${out}_cbc_trimmed_starAligned.sortedByCoord.out.bam $intron $exon ${out}_cbc_trimmed_star ${p2bedtools} ${p2samtools} ${p2s}" | qsub -V -cwd -m eas -M $email -N tab-$out -e tab-${out}.err -o tab-${out}.out -l h_vmem=20G -l h_rt=15:00:00 -pe threaded 2 -hold_jid map-$out
