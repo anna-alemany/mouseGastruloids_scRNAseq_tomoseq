@@ -48,16 +48,28 @@ We refer to transcripts as unique molecules based on UMI correction.
 
 Let's assume we start with the following fastq files:
 
-* library_L001_R1_001.fastq.gz
-* library_L001_R2_001.fastq.gz
-* library_L002_R1_001.fastq.gz
-* library_L002_R2_001.fastq.gz
-* library_L003_R1_001.fastq.gz
-* library_L003_R2_001.fastq.gz
-* library_L004_R1_001.fastq.gz
-* library_L004_R2_001.fastq.gz
+| Read 1 | Read 2 |
+| --- | --- |
+| library_L001_R1_001.fastq.gz | library_L001_R2_001.fastq.gz |
+| library_L002_R1_001.fastq.gz | library_L002_R2_001.fastq.gz |
+| library_L003_R1_001.fastq.gz | library_L003_R2_001.fastq.gz | 
+| library_L004_R1_001.fastq.gz | library_L004_R2_001.fastq.gz | 
 
 To map them to the mouse genome, we need to type in the terminal:
 ```{bash}
-submit_array_starmap.sh library_L00
+submit_array_starmap.sh library_L00 output_name
 ```
+The script *submit_array_starmap.sh* will submit a sequence of scripts that perform the required steps to map our library to the mouse genome and produce the count tables.
+
+In order for the script to run, we need TrimGalore-0.4.3, cutadapt, STAR, python3, together with all the scripts called.
+
+This will produce a total of 9 files:
+
+| | spliced | unspliced | total | 
+| --- | --- | --- | --- | 
+**read counts** | output_name_spliced.coutc.tsv | output_name_unspliced.coutc.tsv | output_name_total.coutc.tsv | 
+**observed UMIs** | output_name_spliced.coutb.tsv | output_name_spliced.coutb.tsv | output_name_total.coutb.tsv | 
+**estimated transcripts** | output_name_unspliced.coutt.tsv | output_name_spliced.coutt.tsv | output_name_total.coutt.tsv | 
+
+Unspliced, spliced or total denotes whether the read contains some region in an intron (unspliced) or an exon (spliced) of the annotated gene. Total does not take introns/exons into account. coutc refers to the total number of reads, coutb to the total number of observed UMIs, and coutt is the total number of unique transcripts. The last one is obtained from coutb by applying the Poisson correction described by D. Grun in his Nature paper.
+
