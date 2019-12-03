@@ -22,13 +22,15 @@ source /hpc/hub_oudenaarden/aalemany/virtualEnvironments/venv36/bin/activate
 # define user's email
 email=a.alemany@hubrecht.eu
 
+# define path to mouse reference genome
+reference=/hpc/hub_oudenaarden/group_references/ensembl/93/mus_musculus/star_index_60
+
 # The real script starts here.
 # This will submit a sequence of scripts in an array. First, fastq lanes will be merged, then barcodes will be extracted, resulting fastq files will be trimmed and mapped, and finally reads falling into introns and exons will be identified.
 # Each script will produce *.err and *.out files summarizing possible error or output messages. 
 in=$1
 out=$2
 protocol=celseq2
-reference=mouse
 
 # merge data
 echo "${p2s}/mergeLanes.sh $in $out" | qsub -cwd -m eas -M $email -N merge-$out -e merge-${out}.err -o merge-${out}.out -l h_vmem=10G -l h_rt=15:00:00 -pe threaded 2
