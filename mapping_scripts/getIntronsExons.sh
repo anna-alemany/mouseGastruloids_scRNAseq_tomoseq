@@ -1,25 +1,26 @@
 #!/bin/bash
 
-if [ $# -ne 6 ]
+if [ $# -ne 7 ]
 then
     echo "Please, give 4 input files:"
     echo "1) sorted bam file (map with star)"
-    echo "2) genome [mouse, human, zebrafish, spiny]"
-    echo "3) output root files"
-    echo "4) path to bedtools"
-    echo "5) path to samtools"
-    echo "6) path to countExonsIntrons.py"
+    echo "2) file with introns"
+    echo "3) file with exons"
+    echo "4) output root files"
+    echo "5) path to bedtools"
+    echo "6) path to samtools"
+    echo "7) path to countExonsIntrons.py"
     exit
 fi
 
 inbam=$1
-out=$3
 
-intron=/hpc/hub_oudenaarden/group_references/ensembl/93/mus_musculus/annotations_ensembl_93_mm_introns_exonsubtracted.bed
-exon=/hpc/hub_oudenaarden/group_references/ensembl/93/mus_musculus/annotations_ensembl_93_mm_exons.bed
+intron=$2
+exon=$3
 
-p2b=$4
-p2s=$5
+out=$4
+p2b=$5
+p2s=$6
 
 ${p2b}/bamToBed -i ${inbam} -split > ${out}_bam2bed.bed
 ${p2b}/bedtools intersect -a ${out}_bam2bed.bed -b ${intron} -wb | awk '{if (($6==$10) && ($5==255)) print $1"\t"$2"\t"$3"\t"$4"\t"$6"\t"$NF}' | uniq > ${out}_intron1.bed &
@@ -53,5 +54,5 @@ done
 rm ${out}_bam2bed.bed
 rm ${out}_intron1.bed ${out}_exon1.bed
 
-p2s=$6
+p2s=$7
 ${p2s}/countExonsIntrons.py ${out}_intron.bed ${out}_exon.bed ${out}
