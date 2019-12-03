@@ -1,9 +1,10 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]
+if [ $# -ne 2 ]
 then
     echo "Please, give following inputs:"
     echo "(1) root for R1/R1 fastq.gz files (common part of the name)"
+    echo "(2) name for output files (no extension needed)"
     exit
 fi
 
@@ -21,9 +22,11 @@ source /hpc/hub_oudenaarden/aalemany/virtualEnvironments/venv36/bin/activate
 # define user's email
 email=a.alemany@hubrecht.eu
 
-# 
+# The real script starts here.
+# This will submit a sequence of scripts in an array. First, fastq lanes will be merged, then barcodes will be extracted, resulting fastq files will be trimmed and mapped, and finally reads falling into introns and exons will be identified.
+# Each script will produce *.err and *.out files summarizing possible error or output messages. 
 in=$1
-out=${in%_*_S*_L*}
+out=$2
 protocol=celseq2
 reference=mouse
 
