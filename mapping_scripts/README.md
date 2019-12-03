@@ -77,4 +77,26 @@ Unspliced, spliced or total denotes whether the read contains some region in an 
 
 ### 10X Genomics data
 
-In this case, the number of cells is not know. 
+(because we wanted to keep the mapping as similar as possible to SORTseq, we did not use cellranger and custom-made code was written).
+
+In this case, the number of cells is not know. To identify the number of cells detected in our 10X library, we first run the script: 
+```{bash}
+submit_array_starmap10X.sh library_L00 output_name
+```
+which, as before, will merge the lanes, extract cell barcodes and UMIs from each read, trim the reads and map. Before generating any count table, the script will count the number of reads per barcode. A file called **output_name_cbc_trimmed_rawCELLS.txt** will be generated, which reads as: 
+```{bash}
+  16943 TATCGCCCACAGCTGC
+  16593 GTACAACGTAGACGTG
+  16532 TCTGGCTCACACCGCA
+  16080 CATCCCAGTAGCGCTC
+  15994 AAAGGTAAGCCTGAGA
+  15502 TCATGCCTCACTCCGT
+  15124 GCAGCCAAGACCATGG
+  14928 TCCATCGTCTCCTGCA
+  14878 GGATGTTTCGGCCTTT
+  14844 GACCAATCAACCACAT
+  etc
+```
+where the first column indicates the number of reads and the second the number of barcodes (both depend on the library). Exploring the number of reads per barcode (see figure below) it becomes natural to identify approximately the number of cells that have been sequenced.
+
+![alt text](https://github.com/anna-alemany/mouseGastruloids_scRNAseq_tomoseq/blob/master/mapping_scripts/cells.jpg "Reads per Barcode")
