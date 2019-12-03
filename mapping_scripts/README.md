@@ -44,9 +44,7 @@ We refer to transcripts as unique molecules based on UMI correction.
 
 ## Description of scripts
 
-### SORT-seq and tomo-seq
-
-Let's assume we start with the following fastq files:
+Let's assume we start with the following fastq files (common scheme in both 10X and SORT-seq and tomo-seq):
 
 | Read 1 | Read 2 |
 | --- | --- |
@@ -54,6 +52,10 @@ Let's assume we start with the following fastq files:
 | library_L002_R1_001.fastq.gz | library_L002_R2_001.fastq.gz |
 | library_L003_R1_001.fastq.gz | library_L003_R2_001.fastq.gz | 
 | library_L004_R1_001.fastq.gz | library_L004_R2_001.fastq.gz | 
+
+### SORT-seq and tomo-seq data
+
+Here, the number of cells per library is well known since transcripts from each cells have been barcoded via IVT. 
 
 To map them to the mouse genome, we need to type in the terminal:
 ```{bash}
@@ -73,3 +75,6 @@ This will produce a total of 9 files:
 
 Unspliced, spliced or total denotes whether the read contains some region in an intron (unspliced) or an exon (spliced) of the annotated gene. Total does not take introns/exons into account. coutc refers to the total number of reads, coutb to the total number of observed UMIs, and coutt is the total number of unique transcripts. The last one is obtained from coutb by applying the Poisson correction described by D. Grun in his Nature paper.
 
+### 10X Genomics data
+
+In this case, the number of cells is not know. 
