@@ -1,6 +1,6 @@
 # E14 mouse gastruloids
 
-Two scripts are presented here: 
+Two python notebooks are presented here: 
 
 * **1_Split-rawdata2gastruloids-clean.ipynb**
 
