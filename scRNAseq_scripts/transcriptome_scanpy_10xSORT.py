@@ -10,13 +10,11 @@ sc.logging.print_versions()
 sc.settings.figdir = '../results/E14andLfng_v5_posREVISION2/'
 sc.settings.set_figure_params(dpi=80)
 
-#### Read data for both scanpy and for me####
+#### Read data for scanpy ####
 adata = sc.read_10x_mtx(
         '../data_mtx_format',
         var_names = 'gene_symbols',
         cache = True)
-#print(adata.shape)
-#adata = sc.read_csv('../merge.filt.LfngE14.10xSort.T.coutt.tsv.gz', delimiter = '\t')
 
 #### Pre-processing ####
 adata.obs['n_counts'] = adata.X.sum(axis=1).A1
@@ -64,9 +62,6 @@ sc.tl.pca(adata, svd_solver='arpack', n_comps = 100)
 sc.pl.pca(adata, color=['experiment'], save = '_10XvsSort.pdf')
 sc.pl.pca(adata, color=['Meox1','T','Mt1', 'Gata6', 'Tmsb4x', 'Crabp1', 'Sox17', 'Pax6'], save = '_genes.pdf')
 sc.pl.pca_variance_ratio(adata, log=True, n_pcs = 50, save = True)
-
-#pca_df = pd.DataFrame(adata.varm['PCs'])
-#pca_df.index = adata.var.index
 
 #### neighborhood graph ####
 npca = 40
